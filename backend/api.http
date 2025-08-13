@@ -1,0 +1,37 @@
+### @name Criar nova ideia
+POST http://localhost:3001/ideas
+Content-Type: application/json
+
+{
+  "authorId": "user-001",
+  "improvement": "Reduzir tempo de resposta ao cliente",
+  "currentProcess": "Atendimento manual via e-mail",
+  "proposedChange": "Implementar chatbot com IA",
+  "expectedBenefit": "Agilidade no atendimento e redução de carga operacional"
+}
+
+###
+
+### @name Listar todas as ideias
+GET http://localhost:3001/ideas
+
+###
+
+### @name Buscar ideia por ID
+GET http://localhost:3001/ideas/1
+
+###
+
+### @name Atualizar ideia existente
+PATCH http://localhost:3001/ideas/1
+Content-Type: application/json
+
+{
+  "improvement": "Melhoria no fluxo de atendimento",
+  "proposedChange": "Treinamento da equipe + chatbot"
+}
+
+###
+
+### @name Deletar ideia
+DELETE http://localhost:3001/ideas/3
