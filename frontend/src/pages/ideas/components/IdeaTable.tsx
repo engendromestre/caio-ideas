@@ -13,7 +13,7 @@ import { IdeaRow } from "./IdeaRow";
 type Props = {
   ideas: Idea[];
   onEdit: (idea: Idea) => void;
-  onDelete: (id: number) => void;
+  onDelete: (idea: Idea) => void;
 };
 
 export function IdeaTable({ ideas, onEdit, onDelete }: Props) {

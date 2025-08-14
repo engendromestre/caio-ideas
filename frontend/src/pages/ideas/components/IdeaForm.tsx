@@ -1,20 +1,21 @@
 import { useState, useEffect } from "react";
-import { TextField, Button, FormControl, InputLabel, Select, MenuItem } from "@mui/material";
+import {
+  TextField,
+  Button,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+} from "@mui/material";
 import Grid from "@mui/material/Grid";
 import { Idea } from "@/types/idea";
+import { authorOptions } from "@/constants/authors";
+
 
 type IdeaFormProps = {
   onSubmit: (data: Omit<Idea, "id">, id?: number) => void;
   initialData?: Idea;
 };
-
-const authorOptions = [
-  { id: "A001", name: "Ana Souza" },
-  { id: "B002", name: "Bruno Lima" },
-  { id: "C003", name: "Carla Mendes" },
-  { id: "D004", name: "Daniel Rocha" },
-  { id: "E005", name: "Eduarda Silva" },
-];
 
 export default function IdeaForm({ onSubmit, initialData }: IdeaFormProps) {
   const [authorId, setAuthorId] = useState("");
@@ -33,6 +34,14 @@ export default function IdeaForm({ onSubmit, initialData }: IdeaFormProps) {
     }
   }, [initialData]);
 
+  const handleClear = () => {
+    setAuthorId("");
+    setImprovement("");
+    setCurrentProcess("");
+    setProposedChange("");
+    setExpectedBenefit("");
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -48,13 +57,8 @@ export default function IdeaForm({ onSubmit, initialData }: IdeaFormProps) {
 
     onSubmit(ideaData, initialData?.id);
 
-    if (!initialData) {
-      setAuthorId("");
-      setImprovement("");
-      setCurrentProcess("");
-      setProposedChange("");
-      setExpectedBenefit("");
-    }
+    // Limpa os campos após submit
+    handleClear();
   };
 
   return (
@@ -117,14 +121,28 @@ export default function IdeaForm({ onSubmit, initialData }: IdeaFormProps) {
           />
         </Grid>
 
-        <Grid size={4}>
+        <Grid size={2}>
           <Button
+            fullWidth
             type="submit"
             variant="contained"
             color="primary"
             sx={{ height: "54px" }}
           >
             {initialData ? "Atualizar" : "Salvar"}
+          </Button>
+        </Grid>
+
+        <Grid size={2}>
+          <Button
+            type="button"
+            variant="outlined"
+            color="secondary"
+            fullWidth
+            sx={{ height: "54px" }}
+            onClick={handleClear}
+          >
+            Limpar
           </Button>
         </Grid>
       </Grid>

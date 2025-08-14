@@ -1,48 +1,34 @@
-import { createIdea, deleteIdea, getIdeas, updateIdea } from "@/services/ideas";
-import { Idea } from "@/types/idea";
-import { Box, Container, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
-import IdeaForm from "./components/IdeaForm";
-import { IdeaTable } from "./components/IdeaTable";
+import React from "react";
+import { Container, Typography, Box } from "@mui/material";
 import LightbulbIcon from "@mui/icons-material/Lightbulb";
 
+import DPlusLogo from "./components/dplus";
+import IdeaForm from "./components/IdeaForm";
+import { IdeaTable } from "./components/IdeaTable";
+import IdeaSnackbar from "./components/IdeaSnackbar";
+
+import { useIdeas } from "@/hooks/useIdeas";
+import DeleteConfirmationDialog from "./components/IdeaDeleteConfirmDialog";
+
 export default function Index() {
-  const [ideas, setIdeas] = useState<Idea[]>([]);
-  const [selectedIdea, setSelectedIdea] = useState<Idea | undefined>(undefined);
-
-  function refreshIdeas() {
-    getIdeas()
-      .then(setIdeas)
-      .catch((err) => console.error("Erro ao buscar ideias:", err));
-  }
-
-  useEffect(() => {
-    refreshIdeas();
-  }, []);
-
-  function handleSubmit(data: Omit<Idea, "id">, id?: number) {
-    const action = id ? updateIdea(id, data) : createIdea(data);
-    action.then(() => {
-      refreshIdeas();
-      setSelectedIdea(undefined);
-    });
-  }
-
-  function handleEdit(idea: Idea) {
-    setSelectedIdea(idea);
-  }
-
-  function handleDelete(id: number) {
-    deleteIdea(id).then(refreshIdeas);
-  }
-
-  console.log(ideas);
+  const {
+    ideas,
+    selectedIdea,
+    setSelectedIdea,
+    handleSubmit,
+    handleEdit,
+    handleDelete,
+    confirmOpen,
+    ideaToDelete,
+    executeDelete,
+    snackbar,
+    setSnackbar,
+  } = useIdeas();
 
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
-      <Typography variant="h4" component="h1" align="center" gutterBottom>
-        <LightbulbIcon color="primary" fontSize="large" />
-        Ideias sugeridas
+      <Typography variant="h4" align="center" gutterBottom>
+        <DPlusLogo /> Ideias <LightbulbIcon color="primary" fontSize="large" />
       </Typography>
 
       <Box display="flex" justifyContent="center" mb={4}>
@@ -60,6 +46,20 @@ export default function Index() {
           />
         </Box>
       </Box>
+
+      <DeleteConfirmationDialog
+        open={confirmOpen}
+        onClose={() => setSelectedIdea(undefined)}
+        onConfirm={executeDelete}
+        idea={ideaToDelete}
+      />
+
+      <IdeaSnackbar
+        open={snackbar.open}
+        message={snackbar.message}
+        severity={snackbar.severity}
+        onClose={() => setSnackbar((s) => ({ ...s, open: false }))}
+      />
     </Container>
   );
 }

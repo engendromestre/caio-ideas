@@ -2,17 +2,18 @@ import { Idea } from "@/types/idea";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { IconButton, Stack, TableCell, TableRow } from "@mui/material";
+import { getAuthorNameById } from "@/constants/authors";
 
 type Props = {
   idea: Idea;
   onEdit: (idea: Idea) => void;
-  onDelete: (id: number) => void;
+  onDelete: (idea: Idea) => void;
 };
 
 export function IdeaRow({ idea, onEdit, onDelete }: Props) {
   return (
     <TableRow hover>
-      <TableCell>{idea.authorId}</TableCell>
+     <TableCell>{getAuthorNameById(idea.authorId)}</TableCell>
       <TableCell>{idea.improvement}</TableCell>
       <TableCell>{idea.currentProcess}</TableCell>
       <TableCell>{idea.proposedChange}</TableCell>
@@ -29,7 +30,7 @@ export function IdeaRow({ idea, onEdit, onDelete }: Props) {
           <IconButton
             color="error"
             aria-label="Excluir"
-            onClick={() => onDelete(idea.id!)}
+            onClick={() => onDelete(idea)}
           >
             <DeleteIcon />
           </IconButton>

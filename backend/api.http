@@ -3,7 +3,7 @@ POST http://localhost:3001/ideas
 Content-Type: application/json
 
 {
-  "authorId": "user-001",
+  "authorId": "user-002",
   "improvement": "Reduzir tempo de resposta ao cliente",
   "currentProcess": "Atendimento manual via e-mail",
   "proposedChange": "Implementar chatbot com IA",
@@ -23,10 +23,11 @@ GET http://localhost:3001/ideas/1
 ###
 
 ### @name Atualizar ideia existente
-PATCH http://localhost:3001/ideas/1
+PATCH http://localhost:3001/ideas/2
 Content-Type: application/json
 
 {
+  "authorId": "user-002",
   "improvement": "Melhoria no fluxo de atendimento",
   "proposedChange": "Treinamento da equipe + chatbot"
 }
@@ -34,4 +35,4 @@ Content-Type: application/json
 ###
 
 ### @name Deletar ideia
-DELETE http://localhost:3001/ideas/3
+DELETE http://localhost:3001/ideas/1
